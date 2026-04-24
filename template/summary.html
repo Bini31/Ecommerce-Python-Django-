@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{%load static %}
+{% load crispy_forms_tags %}
+{%block header %}
+    <div class="hero-wrap hero-bread" style="background-image: url({% static 'images/bg_1.jpg' %});">
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
+          <div class="col-md-9 ftco-animate text-center">
+          	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Register</span></p>
+            <h1 class="mb-0 bread">Order Summary</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}
+{% block content %}
+<!--{{orders}}-->
+<!--{% for i in orders %}-->
+<!-- <br>{{i.order_id}}<br>-->
+<!--{{i.amount}}<br>-->
+<!--{{i.order_date}}<br>-->
+<!--  {% for j in i.items.all %}-->
+
+<!--    {{j.product.name}}-->
+<!--    {{j.product.price}}-->
+<!--    {{j.quantity}}-->
+<!--{% endfor %}-->
+<!--{% endfor %}-->
+<body style="font-family: Arial; background:#f5f5f5;">
+
+<div class="mb-5 p-5" style="display:flex; justify-content:center; margin-top:40px;">
+
+    <!-- Main Card -->
+
+
+
+        {% for i in orders %}
+    <div class="border border-5 border-success text-success p-5 m-2" style="width:500px; background:white; padding:20px; border-radius:10px; box-shadow:0 0 10px #ccc;">
+        <p><strong>Order ID:</strong> {{ i.order_id }}</p>
+        <p><strong>Order Total:</strong> {{ i.amount}}</p>
+        <p><strong>Ordered On:</strong> {{ i.order_date }}</p>
+        <p><strong>Status:</strong> {{ i.delivery_status }}</p>
+
+        <!-- Product Loop -->
+        {% for j in i.items.all %}
+        <div class="border border-5 border-success" style="display:flex; align-items:center; border:1px solid #ddd; border-radius:10px; padding:10px; margin-top:15px;">
+
+            <!-- Image -->
+            <div style="width:100px; height:70px; background:#eee; border-radius:8px; display:flex; align-items:center; justify-content:center; margin-right:15px;">
+                <img src="{{ j.product.image.url }}" width="90">
+            </div>
+
+            <!-- Details -->
+            <div>
+                <p><strong>{{ j.product.name }}</strong></p>
+                <p>Price: {{ j.product.price }}</p>
+                <p>Quantity: {{ j.quantity }}</p>
+            </div>
+
+        </div>
+        {% endfor %}
+        </div>
+
+        {% endfor %}
+
+
+</div>
+
+</body>
+{% endblock %}
