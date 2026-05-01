@@ -1,5 +1,6 @@
 
 from django.contrib.auth import authenticate,login,logout
+from django.utils.decorators import method_decorator
 from shop.forms import SignUpForm,LoginForm
 from django.shortcuts import render,redirect
 from django.contrib import messages
@@ -7,22 +8,27 @@ from shop.models import Category,Product
 from shop.forms import CategoryForm,ProductForm,StockForm
 
 from django.views import View
+from django.contrib.auth.decorators import login_required
+
 class Categories(View):
     def get(self, request):
         c=Category.objects.all()
         context = {'categories': c}
         return render(request, "categories.html",context)
+@method_decorator(login_required,name='dispatch')
 class Productdetail(View):
     def get(self, request,i):
         p=Product.objects.get(id=i)
         context={'product':p}
         return render(request, "productdetail.html",context)
+@method_decorator(login_required,name='dispatch')
 class Products(View):
     def get(self, request,i):
         pname = Category.objects.get(id=i)
         context={'category':pname}
         print(pname)
         return render(request, "products.html",context)
+@method_decorator(login_required,name='dispatch')
 class Addcategory(View):
     def get(self,request):
         form_instance=CategoryForm()
@@ -32,6 +38,7 @@ class Addcategory(View):
         if form_instance.is_valid():
             form_instance.save()
             return redirect('shop:categories')
+@method_decorator(login_required,name='dispatch')
 class Addproduct(View):
     def get(self,request):
         form_instance=ProductForm()
@@ -76,6 +83,7 @@ class Logout(View):
     def get(self, request):
       logout(request)
       return render(request, "categories.html")
+@method_decorator(login_required,name='dispatch')
 class Addstock(View):
     def post(self, request,i):
         p=Product.objects.get(id=i)

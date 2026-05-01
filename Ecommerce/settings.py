@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles','shop','cart','search','crispy_forms', 'crispy_bootstrap5','razorpay',
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
+LOGIN_URL="shop:login"
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

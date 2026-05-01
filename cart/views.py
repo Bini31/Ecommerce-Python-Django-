@@ -5,11 +5,12 @@ from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from shop.models import Product
 from cart.models import Cart,Order,OrderItems
-
+from django.contrib.auth.decorators import login_required
 from cart.forms import OrderForm
 
 
 # Create your views here.
+@method_decorator(login_required,name='dispatch')
 class AddToCart(View):
     def get(self,request,i):
         u=request.user
@@ -22,6 +23,7 @@ class AddToCart(View):
             c=Cart(user=u,product=p,quantity=1)
             c.save()
         return redirect('cart:cartview')
+@method_decorator(login_required,name='dispatch')
 class CartView(View):
     def get(self,request):
         u=request.user
@@ -32,6 +34,7 @@ class CartView(View):
 
         context={'cart':c,'sum':sum}
         return render(request,'cart.html',context)
+@method_decorator(login_required,name='dispatch')
 class CartDecrement(View):
     def get(self,request,i):
         try:
@@ -44,6 +47,8 @@ class CartDecrement(View):
         except:
              pass
         return redirect('cart:cartview')
+@method_decorator(login_required,name='dispatch')
+
 class CartRemove(View):
     def get(self,request,i):
         try:
@@ -53,6 +58,7 @@ class CartRemove(View):
             pass
         return redirect('cart:cartview')
 import uuid
+@method_decorator(login_required,name='dispatch')
 class Checkout(View):
     def post(self,request):
         form_instance=OrderForm(request.POST)
@@ -110,7 +116,7 @@ class PaymentSuccess(View):
 
         c.delete()
         return render(request,'paymentsuccess.html')
-
+@method_decorator(login_required,name='dispatch')
 class OrderSummary(View):
     def get(self,request):
         u=request.user
